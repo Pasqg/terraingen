@@ -8,9 +8,11 @@ import static org.pasqg.terraingen.utils.MathUtils.minMaxScaling;
 
 public class NoiseGenerator {
     private final Random mRandom;
+    private final int mSeed;
 
     public NoiseGenerator(int aSeed) {
-        mRandom = new Random(aSeed);
+        mSeed = aSeed;
+        mRandom = new Random(mSeed);
     }
 
     /**
@@ -19,15 +21,16 @@ public class NoiseGenerator {
     public float[] harmonicPerlin(int aSizeX, int aSizeY, int aStartHarmonic, int aHarmonics) {
         IndexCalculator index = IndexCalculator.withIndexWrapping(aSizeX, aSizeY);
         float[] data = new float[aSizeX * aSizeY];
-        for (double h = aStartHarmonic; h < harmonicNumberCap(aStartHarmonic, aHarmonics); h++) {
+        for (int h = aStartHarmonic; h < harmonicNumberCap(aStartHarmonic, aHarmonics); h++) {
             double step = Math.pow(2, h - 1) / Math.min(aSizeX, aSizeY);
             double amplitude = 1 / Math.pow(2, h - 1);
             double offsetX = mRandom.nextDouble();
             double offsetY = mRandom.nextDouble();
+            PerlinNoise perlin = new PerlinNoise(mSeed * (37 << h));
             for (int i = 0; i < aSizeX; i++) {
                 for (int k = 0; k < aSizeY; k++) {
                     data[index.of(i, k)] +=
-                            (float) (PerlinNoise.noise(offsetX + k * step, offsetY + i * step, 0) * amplitude);
+                            (float) (perlin.noise(offsetX + k * step, offsetY + i * step, 0) * amplitude);
                 }
             }
         }

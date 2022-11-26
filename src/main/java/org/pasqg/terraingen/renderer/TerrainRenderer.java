@@ -14,10 +14,10 @@ public class TerrainRenderer {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         long seed = 3409129824829640289L;
-        int width = 1024;
-        int height = 1024;
+        int width = 2048;
+        int height = 2048;
         int startHarmonic = 3;
-        int harmonics = 5;
+        int harmonics = 32;
 
         Random random = new Random(seed);
         NoiseGenerator generator = new NoiseGenerator(random.nextInt());
