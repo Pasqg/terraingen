@@ -19,6 +19,7 @@ public class NoiseGenerator {
      * Sums different harmonics of perlin noise
      */
     public float[] harmonicPerlin(int aSizeX, int aSizeY, int aStartHarmonic, int aHarmonics) {
+        PerlinNoise perlin = new PerlinNoise(mSeed);
         IndexCalculator index = IndexCalculator.withIndexWrapping(aSizeX, aSizeY);
         float[] data = new float[aSizeX * aSizeY];
         for (int h = aStartHarmonic; h < harmonicNumberCap(aStartHarmonic, aHarmonics); h++) {
@@ -26,11 +27,10 @@ public class NoiseGenerator {
             double amplitude = 1 / Math.pow(2, h - 1);
             double offsetX = mRandom.nextDouble();
             double offsetY = mRandom.nextDouble();
-            PerlinNoise perlin = new PerlinNoise(mSeed * (37 << h));
             for (int i = 0; i < aSizeX; i++) {
                 for (int k = 0; k < aSizeY; k++) {
                     data[index.of(i, k)] +=
-                            (float) (perlin.noise(offsetX + k * step, offsetY + i * step, 0) * amplitude);
+                            (float) (perlin.noise2D(offsetX + k * step, offsetY + i * step) * amplitude);
                 }
             }
         }

@@ -18,7 +18,22 @@ public class PerlinNoise {
         }
     }
 
-    public double noise(double x, double y, double z) {
+    public double noise2D(double x, double y) {
+        int X = (int) Math.floor(x) & 255, Y = (int) Math.floor(y) & 255;
+        x -= Math.floor(x); y -= Math.floor(y);
+        double u = fade(x), v = fade(y);
+
+        int A = mPermutation[X] + Y, AA = mPermutation[A], AB = mPermutation[A + 1];// HASH COORDINATES OF
+        int B = mPermutation[X + 1] + Y, BA = mPermutation[B], BB = mPermutation[B + 1]; // THE 8 CUBE CORNERS,
+
+        double z = 0;
+        return lerp(v, lerp(u, grad(mPermutation[AA], x, y, z),  // AND ADD
+                grad(mPermutation[BA], x - 1, y, z)), // BLENDED
+                lerp(u, grad(mPermutation[AB], x, y - 1, z),  // RESULTS
+                        grad(mPermutation[BB], x - 1, y - 1, z)));
+    }
+
+    public double noise3D(double x, double y, double z) {
         int X = (int) Math.floor(x) & 255,                  // FIND UNIT CUBE THAT
                 Y = (int) Math.floor(y) & 255,                  // CONTAINS POINT.
                 Z = (int) Math.floor(z) & 255;
