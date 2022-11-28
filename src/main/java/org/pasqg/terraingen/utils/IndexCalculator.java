@@ -3,6 +3,10 @@ package org.pasqg.terraingen.utils;
 public interface IndexCalculator {
     int of(int aX, int aY);
 
+    static IndexCalculator noIndexWrapping(int aSizeX) {
+        return new NoWrappingCalculator(aSizeX);
+    }
+
     static IndexCalculator withIndexWrapping(int aSizeX, int aSizeY) {
         return new ToroidalIndexCalculator(aSizeX, aSizeY);
     }
