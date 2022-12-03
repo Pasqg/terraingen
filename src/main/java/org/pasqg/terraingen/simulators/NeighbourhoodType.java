@@ -1,4 +1,4 @@
-package org.pasqg.terraingen.renderer;
+package org.pasqg.terraingen.simulators;
 
 import java.util.List;
 

@@ -1,12 +1,9 @@
 package org.pasqg.terraingen.renderer;
 
-import org.pasqg.terraingen.noise.NoiseGenerator;
-import org.pasqg.terraingen.parameters.ErosionParameters;
 import org.pasqg.terraingen.utils.ImageUtils;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Random;
 
 public class TerrainRenderer {
     private static final String BLENDER = "/Applications/Blender3.2.app/Contents/MacOS/Blender";
@@ -15,30 +12,18 @@ public class TerrainRenderer {
 
     public static void main(String[] args) throws IOException, InterruptedException {
         long seed = 3409129824829640289L;
-        int width = 1024;
+        int width = 2048;
         int height = width;
-        int startHarmonic = 3;
-        int harmonics = 8;
+        float scale = 3.0f;
 
-        ErosionParameters parametersFlats = new ErosionParameters(seed)
-                .setMapSizeX(width)
-                .setMapSizeY(height)
-                .setParticleInertia(0.001f)
-                .setDepositionRadius(5)
-                .setParticlesNum(120000);
+        Landscaper landscaper = Landscaper.generateRandom(seed, width, height, scale, 0.33f)
+                .smoothErosion();
 
-        Random random = new Random(seed);
-        NoiseGenerator generator = new NoiseGenerator(random.nextInt());
-
-        float[] base = generator.harmonicPerlin(width, height, startHarmonic, harmonics);
-        String path = "renders/heightmap_" + seed + ".tiff";
-        ImageUtils.writeToFile(ImageUtils.fromFloatArray(base, width, height), path, "tiff");
-        render(1. / (startHarmonic), path, "renders/output_" + seed + ".png");
-
-        float[] eroded = HydraulicErosionSimulator.erode(base, parametersFlats);
         String eroded_path = "renders/heightmap_eroded_" + seed + ".tiff";
-        ImageUtils.writeToFile(ImageUtils.fromFloatArray(eroded, width, height), eroded_path, "tiff");
-        render(1. / (startHarmonic), eroded_path, "renders/output_eroded_" + seed + ".png");
+        ImageUtils.writeToFile(ImageUtils.fromFloatArray(landscaper.terrain(), width, height),
+                eroded_path,
+                "tiff");
+        render(1. / (scale), eroded_path, "renders/output_eroded_" + seed + ".png");
     }
 
     public static void render(double aScale,

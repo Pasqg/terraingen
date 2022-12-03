@@ -1,4 +1,4 @@
-package org.pasqg.terraingen.renderer;
+package org.pasqg.terraingen.simulators;
 
 import org.pasqg.terraingen.parameters.ErosionParameters;
 import org.pasqg.terraingen.utils.IndexCalculator;

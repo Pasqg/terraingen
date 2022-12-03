@@ -3,6 +3,8 @@ package org.pasqg.terraingen.utils;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 public enum MathUtils {
     ;
@@ -12,6 +14,24 @@ public enum MathUtils {
         float[] result = new float[aVector.length];
         for (int i = 0; i < aVector.length; i++) {
             result[i] = aVector[i] / magnitude;
+        }
+        return result;
+    }
+
+    public static float[] applyTransformation(float[] aVector, Function<Float, Float> aTransform) {
+        float[] result = new float[aVector.length];
+        for (int i = 0; i < aVector.length; i++) {
+            result[i] = aTransform.apply(aVector[i]);
+        }
+        return result;
+    }
+
+    public static float[] applyTransformation(float[] aVector1,
+            float[] aVector2,
+            BiFunction<Float, Float, Float> aTransform) {
+        float[] result = new float[Math.min(aVector1.length, aVector2.length)];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = aTransform.apply(aVector1[i], aVector2[i]);
         }
         return result;
     }
