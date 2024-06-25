@@ -1,16 +1,20 @@
-# Terrain generator
+# TerrainGen
+
+A Blender wrapper to render procedurally generated terrains.
 
 The terrain generator creates a base heightmap using layered perlin noise,
-where each layer is at multiple frequency (harmonics). The resulting
-heightmaps look like this:
+where each layer is at multiple frequency (harmonics). Then further
+processing is applied to customize the base layer (erosion only for now).
+
+The resulting heightmaps look like this:
 
 ![perlin noise](docs_files/heightmap_3409129824829640289.png)
 
-This renders terrain like:
+The terrain is then rendered using Blender:
 
 ![rendered](docs_files/output_3409129824829640289.png)
 
-# Erosion
+## Erosion
 
 To make terrain more realistic, the terrain generator can simulate erosion.
 There are various papers that provide implementations which this terrain
@@ -76,3 +80,7 @@ particles creating interesting ridges and cliffs.
 ![](docs_files/heightmap_0.01inertia_500k_0.001inertia_200k.png)
 
 ![](docs_files/output_0.01inertia_500k_0.001inertia_200k.png)
+
+## License
+
+This project is licensed under [Apache 2.0 License](LICENSE)
